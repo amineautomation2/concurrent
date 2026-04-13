@@ -36,33 +36,33 @@ jobs:
           path: csv/hl_${{ matrix.chunk }}_investment.csv
           if-no-files-found: error
 
-  merge-results:
-    needs: worker
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.12.3'
-
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
-
-      - name: Download All Artifacts
-        uses: actions/download-artifact@v6
-        with:
-          path: csv
-          pattern: results-*
-          merge-multiple: true
-
-      - name: Merge and Commit
-        run: python main.py --sheet Investment
-      
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: "Updated scrapers: Mixed results"
-      
+#  merge-results:
+#    needs: worker
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v6
+#
+#      - name: Setup Python
+#        uses: actions/setup-python@v6
+#        with:
+#          python-version: '3.12.3'
+#
+#      - name: Install Dependencies
+#        run: pip install -r requirements.txt
+#
+#      - name: Download All Artifacts
+#        uses: actions/download-artifact@v6
+#        with:
+#          path: csv
+#          pattern: results-*
+#          merge-multiple: true
+#
+#      - name: Merge and Commit
+#        run: python main.py --sheet Investment
+#      
+#      - name: Commit and push changes
+#        uses: stefanzweifel/git-auto-commit-action@v7
+#        with:
+#          commit_message: "Updated scrapers: Mixed results"
+#      
