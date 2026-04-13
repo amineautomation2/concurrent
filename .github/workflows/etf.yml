@@ -1,0 +1,64 @@
+name: ETF
+
+on:
+  workflow_dispatch:
+
+jobs:
+  worker:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk: [0, 1, 2, 3, 4] 
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12.3'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Scraper Chunk
+        run: python main.py --id ${{ matrix.chunk }}
+
+      - name: Upload Partial Data
+        uses: actions/upload-artifact@v6
+        with:
+          name: results-${{ matrix.chunk }}
+          path: csv/hl_${{ matrix.chunk }}_etf.csv
+
+  merge-results:
+    needs: worker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12.3'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v6
+        with:
+          path: csv
+          pattern: results-*
+          merge-multiple: true
+
+      - name: Merge and Commit
+        run: python main.py --sheets ETF
+      
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "Updated scrapers: Mixed results"
+      

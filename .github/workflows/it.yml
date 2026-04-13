@@ -1,13 +1,12 @@
-name: Distributed Scraper
+name: IT
 
 on:
-  workflow_dispatch: # Manual trigger
+  workflow_dispatch:
 
 jobs:
-  scrape:
+  worker:
     runs-on: ubuntu-latest
     strategy:
-      # This creates 3 parallel jobs
       fail-fast: false
       matrix:
         chunk: [0, 1, 2, 3, 4] 
@@ -27,14 +26,14 @@ jobs:
       - name: Run Scraper Chunk
         run: python main.py --id ${{ matrix.chunk }}
 
-      #- name: Upload Partial Data
-      #  uses: actions/upload-artifact@v6
-      #  with:
-      #    name: results-${{ matrix.chunk }}
-      #    path: csv/hl_mf_${{ matrix.chunk }}.csv
+      - name: Upload Partial Data
+        uses: actions/upload-artifact@v6
+        with:
+          name: results-${{ matrix.chunk }}
+          path: csv/hl_${{ matrix.chunk }}_investment.csv
 
   merge-results:
-    needs: scrape
+    needs: worker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -56,7 +55,7 @@ jobs:
           merge-multiple: true
 
       - name: Merge and Commit
-        run: python main.py --sheets Investment,ETF,MF
+        run: python main.py --sheets Investment
       
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v7
