@@ -30,7 +30,8 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: results-${{ matrix.chunk }}
-          path: csv/hl_${{ matrix.chunk }}_investment.csv
+          path: .
+          if-no-files-found: error
 
   merge-results:
     needs: worker

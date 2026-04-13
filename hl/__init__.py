@@ -36,37 +36,38 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
     # TODO add index to funds
     match sheet:
         case "Investment":
-            get_funds_url(driver, "Investment", xlsx)
-            funds_it = get_xlsx_data(xlsx, "Investment")
+            print(sheet)
+            get_funds_url(driver, sheet, xlsx)
+            funds_it = get_xlsx_data(xlsx, sheet)
             it_config = {
                 "id_worker": id_worker,
                 "max_workers": max_workers,
                 "driver": driver,
                 "funds": funds_it[:5],
-                "sheet": "Investment",
+                "sheet": sheet,
             }
             process_worker_batch(it_config)
             return
         case "ETF":
-            get_funds_url(driver, "ETF", xlsx)
-            funds_etf = get_xlsx_data(xlsx, "ETF")
+            get_funds_url(driver, sheet, xlsx)
+            funds_etf = get_xlsx_data(xlsx, sheet)
             etf_config = {
                 "id_worker": id_worker,
                 "max_workers": max_workers,
                 "driver": driver,
                 "funds": funds_etf[:5],
-                "sheet": "ETF",
+                "sheet": sheet,
             }
             process_worker_batch(etf_config)
             return
         case "MF":
-            funds_mf = get_xlsx_data(xlsx, "MF")
+            funds_mf = get_xlsx_data(xlsx, sheet)
             mf_config = {
                 "id_worker": id_worker,
                 "max_workers": max_workers,
                 "driver": driver,
                 "funds": funds_mf[:5],
-                "sheet": "MF",
+                "sheet": sheet,
             }
 
             process_worker_batch(mf_config)
