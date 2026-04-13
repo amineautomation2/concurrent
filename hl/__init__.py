@@ -47,7 +47,6 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
                 "sheet": sheet,
             }
             process_worker_batch(it_config)
-            return
         case "ETF":
             get_funds_url(driver, sheet, xlsx)
             funds_etf = get_xlsx_data(xlsx, sheet)
@@ -59,7 +58,6 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
                 "sheet": sheet,
             }
             process_worker_batch(etf_config)
-            return
         case "MF":
             funds_mf = get_xlsx_data(xlsx, sheet)
             mf_config = {
@@ -72,7 +70,6 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
 
             process_worker_batch(mf_config)
             get_funds_url_mf(xlsx)
-            return
 
     driver.quit()
 

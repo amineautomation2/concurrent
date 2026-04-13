@@ -118,5 +118,5 @@ def get_fund_keyword_mf(driver: WebDriver, funds: list[dict]) -> list[dict]:
         except:
             print(f"error: {fund}",)
         # pprint(f)
-        delay(0.5, 1)
+        delay(1, 2)
     return data

@@ -58,7 +58,7 @@ def get_funds_url(driver: WebDriver, fund_type: Literal["Investment", "ETF"], xl
                 list_funds.append(dict(name=name, url=url))
         page += 1
         offset += 50
-        delay(0.5, 1.5)
+        delay(1, 2)
         if offset <= max_offset:
             endpoint = get_endpoint_by_type(fund_type, offset)
             driver.get(endpoint)
