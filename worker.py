@@ -4,6 +4,7 @@ import csv
 import sys
 from typing import Any
 import openpyxl
+from utils import save_xlsx
 
 
 def get_xlsx_data(filename, sheet_name) -> list[dict]:
@@ -16,7 +17,7 @@ def get_xlsx_data(filename, sheet_name) -> list[dict]:
             continue
         c1 = ws.cell(row, 1).value
         c3 = ws.cell(row, 3).value
-        f = dict(name=c1, url=c3, index=row)
+        f = dict(name=c1, url=c3, index=row, sheet=sheet_name)
         data.append(f)
     wb.close()
     return data
@@ -64,7 +65,7 @@ def process_data(
     return fn(data)
 
 
-def add_isin(data: list[dict]) -> list[dict]:
+def add_dummy_isin(data: list[dict]) -> list[dict]:
     new_data = []
     for f in data:
         f.update(dict(isin=f"isin_{f.get('index')}"))
@@ -74,42 +75,17 @@ def add_isin(data: list[dict]) -> list[dict]:
 
 def merge_csv_to_xlsx(xlsx_out: str, fields: list[str], sheet: str):
     combined_data = []
-    # 1. Loop through every file in the download directory
     csv_dir = os.path.join(os.getcwd(), "csv")
     for filename in os.listdir(csv_dir):
-        if filename.endswith(".csv"):
+        if filename.endswith(f"{sheet.lower()}.csv"):
             file_path = os.path.join(csv_dir, filename)
             data = read_csv(file_path)
             if data:
                 combined_data.extend(data)
     # sorted_data = sorted(combined_data, key=lambda x: int(x["index"]))
     # write_csv(output_file, sorted_data, ["index", "name", "isin", "url"])
+    for item in combined_data:
+        item.pop("sheet", None)
+    print(combined_data)
     save_xlsx(xlsx_out, combined_data, fields, sheet)
     print(f"Successfully merged all files into {xlsx_out}")
-
-
-def save_xlsx(
-    xlsx_path: str,
-    funds: list[dict],
-    cols: list[str],
-    sheet: str,
-    start: int = 2,
-):
-    wb = openpyxl.load_workbook(xlsx_path)
-    ws = wb[sheet]
-    for fund in funds:
-        for idx, val in enumerate(cols):
-            col = idx + 1
-            row = fund.get("index")
-            if row:
-                start = int(row)
-            if val == "url":
-                cell = ws.cell(start, col, fund.get(val))
-                cell.style = "Hyperlink"
-                cell.hyperlink = fund.get(val)
-                continue
-            ws.cell(start, col, fund.get(val))
-        start += 1
-    xlsx_path = f"{xlsx_path[: len(xlsx_path) - 5]}_merged.xlsx"
-    wb.save(xlsx_path)
-    wb.close()

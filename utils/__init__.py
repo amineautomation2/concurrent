@@ -26,8 +26,10 @@ def get_random_user_agent() -> dict:
     options.version_ranges = {
         "chrome": VersionRange(140, 144),  # Choose version between 125 and 129
     }
-    ua = ua_generator.generate(browser="chrome", platform="windows", options=options)
-    ua.headers.accept_ch("Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List")
+    ua = ua_generator.generate(
+        browser="chrome", platform="windows", options=options)
+    ua.headers.accept_ch(
+        "Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List")
     # return ua.headers.get()
     headers = ua.headers.get()
     return {k.title(): v for k, v in headers.items()}
@@ -133,7 +135,8 @@ def fetch_with_backoff(
                 )
             else:
                 # For 404 or 403, retrying usually won't help
-                print(f"Permanent error {response.status_code}. Skipping retries.")
+                print(
+                    f"Permanent error {response.status_code}. Skipping retries.")
                 return response
 
         except Exception as e:
@@ -170,7 +173,11 @@ def get_with_backoff(driver: WebDriver, url: str, max_retries=5, initial_delay=2
 
 
 def save_xlsx(
-    xlsx_path: str, funds: list[dict], cols: list[str], sheet: str, start: int = 2
+    xlsx_path: str,
+    funds: list[dict],
+    cols: list[str],
+    sheet: str,
+    start: int = 2,
 ):
     wb = openpyxl.load_workbook(xlsx_path)
     ws = wb[sheet]
@@ -179,7 +186,7 @@ def save_xlsx(
             col = idx + 1
             row = fund.get("index")
             if row:
-                start = row
+                start = int(row)
             if val == "url":
                 cell = ws.cell(start, col, fund.get(val))
                 cell.style = "Hyperlink"
