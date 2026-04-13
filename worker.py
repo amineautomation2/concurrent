@@ -36,10 +36,12 @@ def write_csv_by_id(
     data: list[dict],
     fields: list[str],
 ) -> None:
-    with open(os.path.join("csv", filename), "w+", newline="") as f:
+    filepath = os.path.join("csv", filename)
+    with open(filepath, "w+", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         writer.writerows(data)
+        print(f"file {filename} created.")
 
 
 def write_csv(out: str, data: list[dict], fields: list[str]) -> None:
