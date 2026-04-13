@@ -84,12 +84,14 @@ def process_worker_batch(config: dict):
     max_workers = config["max_workers"]
     funds_per_worker = get_data_by_worker_id(id_worker, max_workers, funds)
     out_csv = f"hl_{id_worker}_{sheet.lower()}.csv"
+    fields = ["index", "name", "isin", "url", "keyword", "sheet"]
     if sheet == "Investment":
         funds_with_keywords = get_fund_keyword_it(driver, funds_per_worker)
+        write_csv_by_id(out_csv, funds_with_keywords, fields)
     elif sheet == "ETF":
         funds_with_keywords = get_fund_keyword_etf(driver, funds_per_worker)
-    else:
+        write_csv_by_id(out_csv, funds_with_keywords, fields)
+    elif sheet == "MF":
         funds_with_keywords = get_fund_keyword_mf(driver, funds_per_worker)
-    fields = ["index", "name", "isin", "url", "keyword", "sheet"]
-    write_csv_by_id(out_csv, funds_with_keywords, fields)
+        write_csv_by_id(out_csv, funds_with_keywords, fields)
     # print(funds_with_keywords)
