@@ -55,7 +55,7 @@ jobs:
           merge-multiple: true
 
       - name: Merge and Commit
-        run: python main.py --sheets Investment
+        run: python main.py --sheet Investment
       
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v7
