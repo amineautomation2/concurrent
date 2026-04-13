@@ -88,6 +88,6 @@ def merge_csv_to_xlsx(xlsx_out: str, fields: list[str], sheet: str):
     # write_csv(output_file, sorted_data, ["index", "name", "isin", "url"])
     for item in combined_data:
         item.pop("sheet", None)
-    print(combined_data)
+    # print(combined_data)
     save_xlsx(xlsx_out, combined_data, fields, sheet)
     print(f"Successfully merged all files into {xlsx_out}")

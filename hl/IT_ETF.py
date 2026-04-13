@@ -92,7 +92,7 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
     url2_xpath = '//div[@id="factsheet-nav-container"]/ul/li[8]/a'
     isin_xpath = '//div[@id="radix-:r3:-content-Overview"][1]/section/div[1]/div[2]/ul/li[6]/div/div[2]'
     keyword_xpath = '//div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/div/li'
-    wait = WebDriverWait(driver, timeout=5)
+    wait = WebDriverWait(driver, timeout=10)
     data = []
     for fund in funds:
         url_backup = fund.get("url")
@@ -112,10 +112,10 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                         isin = isin.text
                     keyword = find_elements(wait, keyword_xpath)
                     if keyword:
-                        keyword_fmt = ["This stock can be held in a"]
+                        keyword_fmt = []
                         for k in keyword:
                             keyword_fmt.append(k.text.strip())
-                        keyword_fmt = ", ".join(keyword_fmt)
+                        keyword_fmt = f"This Stock can be held in a {', '.join(keyword_fmt)}"
             f = dict(name=name,
                      isin=isin,
                      url=url or url_backup,
@@ -126,9 +126,9 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
 
             data.append(f)
         except:
-            print(f"error: {fund}",)
+            print(f"error: {fund}")
         # pprint(f)
-        delay(0.5, 1)
+        delay(1, 2)
     return data
 
 
@@ -138,7 +138,7 @@ def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
     isin_xpath = '//div[@id="radix-:R3km:-content-Overview"][1]/section/div[1]/div[2]/ul/li[last()]/div/div[2]'
     keyword_xpath = '//div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/div/li'
     # keyword_xpath = '//div[@class="small-hide medium-hide wide-medium-hide"]'
-    wait = WebDriverWait(driver, timeout=5)
+    wait = WebDriverWait(driver, timeout=10)
     data = []
     for fund in funds:
         url_backup = fund.get("url")
@@ -158,10 +158,10 @@ def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
                         isin = isin.text
                     keyword = find_elements(wait, keyword_xpath)
                     if keyword:
-                        keyword_fmt = ["This stock can be held in a"]
+                        keyword_fmt = []
                         for k in keyword:
                             keyword_fmt.append(k.text.strip())
-                        keyword_fmt = ", ".join(keyword_fmt)
+                        keyword_fmt = f"This stock can be held in a {', '.join(keyword_fmt)}"
             f = dict(name=name,
                      isin=isin,
                      url=url or url_backup,
@@ -174,5 +174,5 @@ def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
         except:
             print(f"error: {fund}",)
         # pprint(f)
-        delay(0.5, 1)
+        delay(1, 2)
     return data
