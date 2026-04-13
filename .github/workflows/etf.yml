@@ -24,7 +24,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Scraper Chunk
-        run: python main.py --id ${{ matrix.chunk }}
+        run: python main.py --id ${{ matrix.chunk }} --sheet ETF
 
       - name: Upload Partial Data
         uses: actions/upload-artifact@v6
