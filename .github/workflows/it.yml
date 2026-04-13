@@ -26,11 +26,14 @@ jobs:
       - name: Run Scraper Chunk
         run: python main.py --id ${{ matrix.chunk }} --sheet investment
 
+      - name: List files to verify
+        run: ls -R  # This shows all folders and files created
+
       - name: Upload Partial Data
         uses: actions/upload-artifact@v6
         with:
           name: results-${{ matrix.chunk }}
-          path: .
+          path: csv/hl_${{ matrix.chunk }}_investment.csv
           if-no-files-found: error
 
   merge-results:
