@@ -16,6 +16,21 @@ from worker import (
 )
 
 
+def get_url(sheet: str) -> None:
+    driver = setup_driver(True)
+    xlsx = get_xlsx_filepath("base.xlsx")
+    match sheet:
+        case "Investment":
+            get_funds_url(driver, sheet, xlsx)
+            return
+        case "ETF":
+            get_funds_url(driver, sheet, xlsx)
+            return
+        case "MF":
+            get_funds_url_mf(xlsx)
+            return
+
+
 def hl_runner(id_worker: int, max_workers: int, sheet: str):
     pref = {
         # "profile.managed_default_content_settings.javascript": 2,
@@ -36,7 +51,6 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
     # TODO add index to funds
     match sheet:
         case "Investment":
-            get_funds_url(driver, sheet, xlsx)
             funds_it = get_xlsx_data(xlsx, sheet)
             it_config = {
                 "id_worker": id_worker,
@@ -45,11 +59,9 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
                 "funds": funds_it[:5],
                 "sheet": sheet,
             }
-            delay(5, 10)
             process_worker_batch(it_config)
 
         case "ETF":
-            get_funds_url(driver, sheet, xlsx)
             funds_etf = get_xlsx_data(xlsx, sheet)
             etf_config = {
                 "id_worker": id_worker,
@@ -58,11 +70,9 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
                 "funds": funds_etf,
                 "sheet": sheet,
             }
-            delay(5, 20)
             process_worker_batch(etf_config)
 
         case "MF":
-            get_funds_url_mf(xlsx)
             funds_mf = get_xlsx_data(xlsx, sheet)
             mf_config = {
                 "id_worker": id_worker,
@@ -71,7 +81,6 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
                 "funds": funds_mf,
                 "sheet": sheet,
             }
-            delay(5, 20)
             process_worker_batch(mf_config)
 
     driver.quit()
