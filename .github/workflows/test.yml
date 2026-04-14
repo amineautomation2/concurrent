@@ -4,46 +4,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  url:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v6
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.12.3'
-
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run Scraper Chunk
-        run: python main.py --url Investment
-
-      - name: Cleanup CSV
-        run: rm -rf csv/*_investment.csv
-
-      - name: Upload Base Spreadsheet
-        uses: actions/upload-artifact@v6
-        with:
-          name: base-investment
-          path: spreadsheet/base.xlsx
-          if-no-files-found: error
-
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: "update: base investment url"
-      
-
   worker:
-    needs: url
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        chunk: [0, 1, 2, 3, 4] 
+        chunk: [0] 
     
     steps:
       - name: Checkout Code

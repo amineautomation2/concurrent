@@ -23,7 +23,7 @@ def main():
     if args.id and args.sheet:
         # id_worker = int(sys.argv[1])
         start = time.perf_counter()
-        hl_runner(id_worker=int(args.id), max_workers=5, sheet=args.sheet)
+        hl_runner(id_worker=int(args.id), max_workers=1, sheet=args.sheet)
         elapsed = time.perf_counter() - start
         print(f"Execution time: {elapsed:.2f} seconds.")
 
