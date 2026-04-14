@@ -95,6 +95,7 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
     # isin_xpath = '//div[@id="radix-:r3:-content-Overview"][1]/section/div[1]/div[2]/ul/li[6]/div/div[2]'
     # isin_xpath = '//*[@id="radix-:r3:-content-Overview"]/section/div/div[2]/ul/li[6]/div/div[2]'
     isin_xpath = 'div[@id="__next"]/main/div/div/div/div[2]/div[1]/section/div/div[2]/ul/li[6]/div/div[2]'
+    isin_xpath = '//ul[@class="info-list_root__Vpw6y info-list_narrow__gzzia"]'
     # isin_xpath = '//div[@id="radix-:r3:-content-Overview" and @data-state="active"]/section/div[1]/div[2]/ul/li[6]/div/div[2]'
     # isin_xpath = '//ul/li/div/div[matches(., "[A-Z]{2}[A-Z0-9]{9}[0-9]")]'
     keyword_xpath = '//div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/div/li'
@@ -129,6 +130,7 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                         for i, el in enumerate(elements):
                             print(
                                 f"Elm {i} text: '{el.get_attribute('textContent')}'")
+                    isin = find_element_or_none(wait, isin_xpath)
                     if isin:
                         print(isin.get_attribute("textContent"))
                         res = findall(r"[A-Z]{2}[A-Z0-9]{9}[0-9]", isin.text)
