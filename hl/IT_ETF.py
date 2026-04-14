@@ -118,6 +118,8 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                 if url:
                     get_with_backoff(driver, url)
                     delay(2, 4)
+                    with open("debug_page.html", "w", encoding='utf-8') as f:
+                        f.write(driver.page_source)
                     isin = find_visibility(wait, isin_xpath)
                     # print(url)
                     print("isin: ", isin)
