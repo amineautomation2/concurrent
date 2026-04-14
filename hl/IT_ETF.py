@@ -121,18 +121,18 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                     # with open("debug_page.html", "w", encoding='utf-8') as f:
                     #    f.write(driver.page_source)
                     # print(url)
-                    delay(5, 10)
-                    xp = '//div[@id="radix-:r3:-content-Overview"]'
-                    xp = '//div[contains(@id, "content-Overview")]'
-                    elements = find_elements(
-                        WebDriverWait(driver, timeout=10), xp)
-                    if elements:
-                        for i, el in enumerate(elements):
-                            print(
-                                f"Elm {i} text: '{el.get_attribute('textContent')}'")
+                    # delay(5, 10)
+                    # xp = '//div[@id="radix-:r3:-content-Overview"]'
+                    # xp = '//div[contains(@id, "content-Overview")]'
+                    # elements = find_elements(
+                    #    WebDriverWait(driver, timeout=10), xp)
+                    # if elements:
+                    #    for i, el in enumerate(elements):
+                    #        print(
+                    #            f"Elm {i} text: '{el.get_attribute('textContent')}'")
                     isin = find_element_or_none(wait, isin_xpath)
                     if isin:
-                        print(isin.get_attribute("textContent"))
+                        # print(isin.get_attribute("textContent"))
                         res = findall(r"[A-Z]{2}[A-Z0-9]{9}[0-9]", isin.text)
                         if len(res) > 0:
                             isin = res[0]
