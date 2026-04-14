@@ -45,7 +45,7 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
                 "funds": funds_it[:5],
                 "sheet": sheet,
             }
-            delay(5, 20)
+            delay(5, 10)
             process_worker_batch(it_config)
 
         case "ETF":

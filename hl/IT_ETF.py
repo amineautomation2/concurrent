@@ -23,7 +23,7 @@ def get_funds_url(driver: WebDriver, fund_type: Literal["Investment", "ETF"], xl
 
     list_funds = []
     endpoint = get_endpoint_by_type(fund_type, offset)
-    driver.get(endpoint)
+    get_with_backoff(driver, endpoint)
 
     wb = openpyxl.load_workbook(xlsx_path)
     ws = wb[fund_type]
@@ -61,7 +61,7 @@ def get_funds_url(driver: WebDriver, fund_type: Literal["Investment", "ETF"], xl
         delay(1, 2)
         if offset <= max_offset:
             endpoint = get_endpoint_by_type(fund_type, offset)
-            driver.get(endpoint)
+            get_with_backoff(driver, endpoint)
 
     iter = 2
     for fund in list_funds:
@@ -110,7 +110,9 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                     isin = find_element_or_none(wait, isin_xpath)
                     # print(url)
                     if isin:
+                        print(isin, isin.text)
                         isin = isin.text
+
                     keyword = find_elements(wait, keyword_xpath)
                     if keyword:
                         keyword_fmt = []
