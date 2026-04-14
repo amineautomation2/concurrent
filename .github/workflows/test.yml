@@ -27,7 +27,7 @@ jobs:
         run: rm -rf csv/*_investment.csv
       
       - name: Run Scraper Chunk
-        run: python main.py --id ${{ matrix.chunk }} --sheet Investment
+        run: python main.py --id ${{ matrix.chunk }} --sheet ETF
 
       - name: List files to verify
         run: ls -R  # This shows all folders and files created
@@ -36,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: results-${{ matrix.chunk }}
-          path: csv/hl_${{ matrix.chunk }}_investment.csv
+          path: csv/hl_${{ matrix.chunk }}_etf.csv
           if-no-files-found: error
 
   merge-results:
@@ -68,7 +68,7 @@ jobs:
           merge-multiple: true
 
       - name: Merge and Commit
-        run: python main.py --sheet Investment
+        run: python main.py --sheet ETF
 
       - name: Upload Partial Data
         uses: actions/upload-artifact@v6
