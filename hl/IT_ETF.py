@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from pprint import pprint
 from utils import find_element_or_none, find_elements, delay, get_with_backoff
 from typing import Literal
+from re import findall
 import openpyxl
 
 
@@ -90,8 +91,9 @@ KEYWORD_XPATH = //div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/d
 def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
     url_xpath = '//nav[@aria-label="Factsheet tabs"]/ul/li[6]/div/a'
     url2_xpath = '//div[@id="factsheet-nav-container"]/ul/li[8]/a'
+    isin_xpath = '//div[@id="radix-:r3:-content-Overview"]'
     # isin_xpath = '//div[@id="radix-:r3:-content-Overview" and @data-state="active"]/section/div[1]/div[2]/ul/li[6]/div/div[2]'
-    isin_xpath = '//ul/li/div/div[matches(., "[A-Z]{2}[A-Z0-9]{9}[0-9]")]'
+    # isin_xpath = '//ul/li/div/div[matches(., "[A-Z]{2}[A-Z0-9]{9}[0-9]")]'
     keyword_xpath = '//div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/div/li'
     wait = WebDriverWait(driver, timeout=10)
     data = []
@@ -101,6 +103,11 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
             name = fund["name"]
             isin, url, keyword_fmt = None, None, None
             get_with_backoff(driver, fund['url'])
+            accept_cookies = find_element_or_none(
+                WebDriverWait(driver, timeout=3), '//*[@id="onetrust-reject-all-handler"]')
+            if accept_cookies:
+                accept_cookies.click()
+
             url_elm = find_element_or_none(
                 wait, url_xpath) or find_element_or_none(wait, url2_xpath)
             if url_elm:
@@ -111,8 +118,9 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                     driver.save_screenshot("error.png")
                     # print(url)
                     if isin:
-                        print(isin, isin.text)
-                        isin = isin.text
+                        res = findall(r"[A-Z]{2}[A-Z0-9]{9}[0-9]", isin.text)
+                        if len(res) > 0:
+                            isin = res[0]
 
                     keyword = find_elements(wait, keyword_xpath)
                     if keyword:
@@ -151,6 +159,12 @@ def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
             name = fund["name"]
             isin, url, keyword_fmt = None, None, None
             get_with_backoff(driver, fund['url'])
+
+            accept_cookies = find_element_or_none(
+                WebDriverWait(driver, timeout=3), '//*[@id="onetrust-reject-all-handler"]')
+            if accept_cookies:
+                accept_cookies.click()
+
             url_elm = find_element_or_none(
                 wait, url_xpath) or find_element_or_none(wait, url2_xpath)
             if url_elm:
