@@ -122,6 +122,7 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                     # print(url)
                     delay(5, 10)
                     xp = '//div[@id="radix-:r3:-content-Overview"]'
+                    xp = '//div[contains(@id, "content-Overview")]'
                     elements = find_elements(
                         WebDriverWait(driver, timeout=10), xp)
                     if elements:
