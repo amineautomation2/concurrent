@@ -29,12 +29,12 @@ jobs:
       - name: Run Scraper Chunk
         run: python main.py --id ${{ matrix.chunk }} --sheet Investment
 
-      - name: Upload HTML Debug
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: html-dump
-          path: debug_page.html
+      #- name: Upload HTML Debug
+      #  uses: actions/upload-artifact@v4
+      #  if: always()
+      #  with:
+      #    name: html-dump
+      #    path: debug_page.html
 
       - name: Upload Partial Data
         uses: actions/upload-artifact@v6
