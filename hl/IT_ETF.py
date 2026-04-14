@@ -91,7 +91,8 @@ KEYWORD_XPATH = //div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/d
 def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
     url_xpath = '//nav[@aria-label="Factsheet tabs"]/ul/li[6]/div/a'
     url2_xpath = '//div[@id="factsheet-nav-container"]/ul/li[8]/a'
-    isin_xpath = '//div[@id="radix-:r3:-content-Overview"]'
+    # isin_xpath = '//div[@id="radix-:r3:-content-Overview"]'
+    isin_xpath = '//div[@id="radix-:r3:-content-Overview"][1]/section/div[1]/div[2]/ul/li[6]/div/div[2]'
     'radix-:r3:-content-Overview'
     # isin_xpath = '//div[@id="radix-:r3:-content-Overview" and @data-state="active"]/section/div[1]/div[2]/ul/li[6]/div/div[2]'
     # isin_xpath = '//ul/li/div/div[matches(., "[A-Z]{2}[A-Z0-9]{9}[0-9]")]'
