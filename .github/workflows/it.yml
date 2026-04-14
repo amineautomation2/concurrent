@@ -74,5 +74,5 @@ jobs:
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          commit_message: "Updated scrapers: Mixed results"
+          commit_message: "Updated: Mixed results"
       
