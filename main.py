@@ -15,7 +15,7 @@ def main():
 
     args = parser.parse_args()
     out = "hl.xlsx"
-    xlsx = os.path.join(os.getcwd(), "spreadsheet", out)
+    xlsx_out = os.path.join(os.getcwd(), "spreadsheet", out)
     if args.id and args.sheet:
         # id_worker = int(sys.argv[1])
         start = time.perf_counter()
@@ -24,7 +24,7 @@ def main():
         print(f"Execution time: {elapsed:.2f} seconds.")
     elif args.sheet:
         merge_csv_to_xlsx(
-            xlsx, ["name", "isin", "url", "keyword"], args.sheet)
+            xlsx_out, ["name", "isin", "url", "keyword"], args.sheet)
 
 
 if __name__ == "__main__":

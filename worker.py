@@ -76,6 +76,7 @@ def add_dummy_isin(data: list[dict]) -> list[dict]:
 
 
 def merge_csv_to_xlsx(xlsx_out: str, fields: list[str], sheet: str):
+    xlsx_in = os.path.join(os.getcwd(), "spreadsheet", "base.xlsx")
     combined_data = []
     csv_dir = os.path.join(os.getcwd(), "csv")
     for filename in os.listdir(csv_dir):
@@ -89,5 +90,5 @@ def merge_csv_to_xlsx(xlsx_out: str, fields: list[str], sheet: str):
     for item in combined_data:
         item.pop("sheet", None)
     # print(combined_data)
-    save_xlsx(xlsx_out, combined_data, fields, sheet)
+    save_xlsx(xlsx_in, xlsx_out, combined_data, fields, sheet)
     print(f"Successfully merged all files into {xlsx_out}")

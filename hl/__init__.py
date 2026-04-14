@@ -42,7 +42,7 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
                 "id_worker": id_worker,
                 "max_workers": max_workers,
                 "driver": driver,
-                "funds": funds_it,
+                "funds": funds_it[:5],
                 "sheet": sheet,
             }
             delay(5, 20)
