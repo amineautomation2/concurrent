@@ -122,6 +122,12 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                     isin = find_selector(
                         WebDriverWait(driver, timeout=20), '#radix-:r3:-content-Overview > section > div > div.card_root__RyqjV.card_gray_blue__WQuRw.overview_keyFactsCard__n1VKv > ul > li:nth-child(6) > div > div.info-list_text___1CfR.info-list_alignLeft__alqoC')
                     # print(url)
+                    xp = '//div[@id="radix-:r3:-content-Overview"]'
+                    elements = driver.find_elements(
+                        By.XPATH, xp)
+                    for i, el in enumerate(elements):
+                        print(
+                            f"Element {i} text: '{el.get_attribute('textContent')}'")
                     print("isin: ", isin)
                     if isin:
                         print(isin.get_attribute("textContent"))
