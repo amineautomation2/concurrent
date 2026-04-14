@@ -4,7 +4,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.webdriver import WebDriver
 from pprint import pprint
-from utils import find_element_or_none, find_elements, delay, get_with_backoff
+from utils import find_element_or_none, find_elements, delay, find_visibility, get_with_backoff
 from typing import Literal
 from re import findall
 import openpyxl
@@ -115,7 +115,7 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                 url = url_elm.get_attribute("href")
                 if url:
                     get_with_backoff(driver, url)
-                    isin = find_element_or_none(wait, isin_xpath)
+                    isin = find_visibility(wait, isin_xpath)
                     # print(url)
                     print("isin: ", isin)
                     if isin:

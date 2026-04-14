@@ -60,6 +60,15 @@ def setup_driver(headless: bool = False, pref: dict = {}) -> WebDriver:
     return webdriver.Chrome(options=options)
 
 
+def find_visibility(wait: WebDriverWait, selector: str) -> WebElement | None:
+    try:
+        elm = wait.until(
+            EC.visibility_of_element_located((By.XPATH, selector)))
+        return elm
+    except:
+        return None
+
+
 def find_element_or_none(wait: WebDriverWait, selector: str) -> WebElement | None:
     try:
         elm = wait.until(EC.presence_of_element_located((By.XPATH, selector)))
