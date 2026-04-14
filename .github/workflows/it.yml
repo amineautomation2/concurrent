@@ -105,10 +105,11 @@ jobs:
           path: spreadsheet
           if-no-files-found: error
 
-      - name: Rebase
-        uses: peter-evans/rebase@v4
-        with:
-          base: main # Rebase PRs onto this branch
+      - name: Pull latest changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v7
