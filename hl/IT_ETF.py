@@ -90,7 +90,7 @@ KEYWORD_XPATH = //div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/d
 def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
     url_xpath = '//nav[@aria-label="Factsheet tabs"]/ul/li[6]/div/a'
     url2_xpath = '//div[@id="factsheet-nav-container"]/ul/li[8]/a'
-    isin_xpath = '//div[@id="radix-:r3:-content-Overview"][1]/section/div[1]/div[2]/ul/li[6]/div/div[2]'
+    isin_xpath = '//div[@id="radix-:r3:-content-Overview" and @data-state="active"]/section/div[1]/div[2]/ul/li[6]/div/div[2]'
     keyword_xpath = '//div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/div/li'
     wait = WebDriverWait(driver, timeout=10)
     data = []
@@ -106,6 +106,7 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                 url = url_elm.get_attribute("href")
                 if url:
                     get_with_backoff(driver, url)
+                    delay(0.5, 1)
                     isin = find_element_or_none(wait, isin_xpath)
                     # print(url)
                     if isin:
@@ -135,7 +136,7 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
 def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
     url_xpath = '//nav[@aria-label="Factsheet tabs"]/ul/li[3]/div/a'
     url2_xpath = '//div[@id="factsheet-nav-container"]/ul/li[5]/a'
-    isin_xpath = '//div[@id="radix-:R3km:-content-Overview"][1]/section/div[1]/div[2]/ul/li[last()]/div/div[2]'
+    isin_xpath = '//div[@id="radix-:R3km:-content-Overview" and @data-state="active"]/section/div[1]/div[2]/ul/li[last()]/div/div[2]'
     keyword_xpath = '//div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/div/li'
     # keyword_xpath = '//div[@class="small-hide medium-hide wide-medium-hide"]'
     wait = WebDriverWait(driver, timeout=10)
