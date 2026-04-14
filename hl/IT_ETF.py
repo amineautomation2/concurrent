@@ -120,6 +120,7 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                     # with open("debug_page.html", "w", encoding='utf-8') as f:
                     #    f.write(driver.page_source)
                     # print(url)
+                    delay(5, 10)
                     xp = '//div[@id="radix-:r3:-content-Overview"]'
                     elements = find_elements(
                         WebDriverWait(driver, timeout=10), xp)
