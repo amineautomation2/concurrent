@@ -107,8 +107,8 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                 url = url_elm.get_attribute("href")
                 if url:
                     get_with_backoff(driver, url)
-                    delay(0.5, 1)
                     isin = find_element_or_none(wait, isin_xpath)
+                    driver.save_screenshot("error.png")
                     # print(url)
                     if isin:
                         print(isin, isin.text)
