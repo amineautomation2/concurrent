@@ -23,6 +23,9 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
+      - name: Cleanup CSV
+        run: rm -rf csv/*_investment.csv
+      
       - name: Run Scraper Chunk
         run: python main.py --id ${{ matrix.chunk }} --sheet Investment
 
@@ -68,9 +71,6 @@ jobs:
           path: spreadsheet
           if-no-files-found: error
 
-      - name: Cleanup CSV
-        run: rm -rf csv/*_investment.csv
-      
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
