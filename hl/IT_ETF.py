@@ -115,6 +115,7 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
                 url = url_elm.get_attribute("href")
                 if url:
                     get_with_backoff(driver, url)
+                    delay(2, 4)
                     isin = find_visibility(wait, isin_xpath)
                     # print(url)
                     print("isin: ", isin)
