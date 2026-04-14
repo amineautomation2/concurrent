@@ -60,6 +60,13 @@ jobs:
 
       - name: Merge and Commit
         run: python main.py --sheet Investment
+
+      - name: Upload Partial Data
+        uses: actions/upload-artifact@v6
+        with:
+          name: hl
+          path: spreadsheet
+          if-no-files-found: error
       
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v7

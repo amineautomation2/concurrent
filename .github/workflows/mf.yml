@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chunk: [0, 1, 2, 3, 4] 
+        chunk: [0, 1, 2] 
     
     steps:
       - name: Checkout Code
@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: results-${{ matrix.chunk }}
-          path: .
+          path: csv
           if-no-files-found: error
 
   merge-results:
@@ -59,6 +59,13 @@ jobs:
 
       - name: Merge and Commit
         run: python main.py --sheet MF
+
+      - name: Upload Partial Data
+        uses: actions/upload-artifact@v6
+        with:
+          name: hl
+          path: spreadsheet
+          if-no-files-found: error
       
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v7
