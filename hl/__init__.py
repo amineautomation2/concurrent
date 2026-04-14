@@ -67,7 +67,7 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
                 "id_worker": id_worker,
                 "max_workers": max_workers,
                 "driver": driver,
-                "funds": funds_etf,
+                "funds": funds_etf[:5],
                 "sheet": sheet,
             }
             process_worker_batch(etf_config)
