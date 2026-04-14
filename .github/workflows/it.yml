@@ -67,6 +67,9 @@ jobs:
           name: hl
           path: spreadsheet
           if-no-files-found: error
+
+      - name: Cleanup CSV
+        run: rm -rf csv/*_investment.csv
       
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v7
