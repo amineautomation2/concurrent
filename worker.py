@@ -41,7 +41,6 @@ def write_csv_by_id(
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         writer.writerows(data)
-        print("csv data: ", data)
         print(f"file {filename} created.")
 
 
