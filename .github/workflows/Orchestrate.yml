@@ -1,4 +1,4 @@
-name: Scheduled Sequential Run
+name: Orchestrate
 on:
   workflow_dispatch:
   schedule:
