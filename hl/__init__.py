@@ -18,7 +18,7 @@ from worker import (
 
 def get_url(sheet: str) -> None:
     driver = setup_driver(True)
-    xlsx = get_xlsx_filepath("base.xlsx")
+    xlsx = get_xlsx_filepath("hl.xlsx")
     match sheet:
         case "Investment":
             get_funds_url(driver, sheet, xlsx)
