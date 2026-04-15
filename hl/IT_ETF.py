@@ -189,12 +189,10 @@ def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
                         res = findall(r"[A-Z]{2}[A-Z0-9]{9}[0-9]", isin.text)
                         if len(res) > 0:
                             isin = res[0]
-                    keyword = find_elements(wait, keyword_xpath)
+                    keyword = find_element_or_none(wait, keyword_xpath)
                     if keyword:
-                        keyword_fmt = []
-                        for k in keyword:
-                            keyword_fmt.append(k.text.strip())
-                        keyword_fmt = f"This stock can be held in a {', '.join(keyword_fmt)}"
+                        keyword = keyword.text.replace("\n", ", ")
+                        keyword_fmt = f"This stock can be held in a {keyword}"
             f = dict(name=name,
                      isin=isin,
                      url=url or url_backup,
