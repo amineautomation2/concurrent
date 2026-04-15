@@ -5,13 +5,15 @@ on:
     - cron: '0 0 * * *' # Runs daily at midnight UTC
 
 jobs:
-  run-workflow-1:
+  run-investment-workflow:
     uses: ./.github/workflows/Investment.yml
   
-  run-workflow-2:
-    needs: run-workflow-1
+  run-etf-workflow:
+    needs: run-investment-workflow
+    if: always()
     uses: ./.github/workflows/ETF.yml
 
-  run-workflow-3:
-    needs: run-workflow-2
+  run-mf-workflow:
+    needs: run-etf-workflow
+    if: always()
     uses: ./.github/workflows/MF.yml
