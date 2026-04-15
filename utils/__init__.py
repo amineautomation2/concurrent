@@ -168,7 +168,7 @@ def fetch_with_backoff(
     return None
 
 
-def get_with_backoff(driver: WebDriver, url: str, max_retries=5, initial_delay=2):
+def get_with_backoff(driver: WebDriver, url: str, max_retries=3, initial_delay=2):
     retries = 0
     delay = initial_delay
 

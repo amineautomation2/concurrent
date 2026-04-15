@@ -106,37 +106,20 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
             if accept_cookies:
                 accept_cookies.click()
 
-            url_elm = find_element_or_none(
-                wait, url_xpath) or find_element_or_none(wait, url2_xpath)
-            if url_elm:
-                url = url_elm.get_attribute("href")
-                if url:
-                    get_with_backoff(driver, url)
-                    # with open("debug_page.html", "w", encoding='utf-8') as f:
-                    #    f.write(driver.page_source)
-                    # print(url)
-                    # delay(5, 10)
-                    # xp = '//div[@id="radix-:r3:-content-Overview"]'
-                    # xp = '//div[contains(@id, "content-Overview")]'
-                    # elements = find_elements(
-                    #    WebDriverWait(driver, timeout=10), xp)
-                    # if elements:
-                    #    for i, el in enumerate(elements):
-                    #        print(
-                    #            f"Elm {i} text: '{el.get_attribute('textContent')}'")
-                    isin = find_element_or_none(wait, isin_xpath)
-                    if isin:
-                        # print(isin.get_attribute("textContent"))
-                        res = findall(r"[A-Z]{2}[A-Z0-9]{9}[0-9]", isin.text)
-                        if len(res) > 0:
-                            isin = res[0]
-
-                    keyword = find_elements(wait, keyword_xpath)
-                    if keyword:
-                        keyword_fmt = []
-                        for k in keyword:
-                            keyword_fmt.append(k.text.strip())
-                        keyword_fmt = f"This Stock can be held in a {', '.join(keyword_fmt)}"
+            url = f"{driver.current_url}/company-information"
+            get_with_backoff(driver, url)
+            isin = find_element_or_none(wait, isin_xpath)
+            if isin:
+                res = findall(r"[A-Z]{2}[A-Z0-9]{9}[0-9]", isin.text)
+                if len(res) > 0:
+                    isin = res[0]
+            keyword = find_elements(wait, keyword_xpath)
+            if keyword:
+                keyword_fmt = []
+                for k in keyword:
+                    keyword_fmt.append(k.text.strip())
+                # keyword_fmt = f"This Stock can be held in a {', '.join(keyword_fmt)}"
+                keyword_fmt = f"This stock can be held in a {', '.join(keyword_fmt[:len(keyword_fmt)-1])} or {keyword_fmt[-1]}"
             f = dict(name=name,
                      isin=isin,
                      url=url or url_backup,
@@ -176,23 +159,18 @@ def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
                 WebDriverWait(driver, timeout=3), '//*[@id="onetrust-reject-all-handler"]')
             if accept_cookies:
                 accept_cookies.click()
-
-            url_elm = find_element_or_none(
-                wait, url_xpath) or find_element_or_none(wait, url2_xpath)
-            if url_elm:
-                url = url_elm.get_attribute("href")
-                if url:
-                    get_with_backoff(driver, url)
-                    isin = find_element_or_none(wait, isin_xpath)
-                    if isin:
-                        # print(isin.get_attribute("textContent"))
-                        res = findall(r"[A-Z]{2}[A-Z0-9]{9}[0-9]", isin.text)
-                        if len(res) > 0:
-                            isin = res[0]
-                    keyword = find_element_or_none(wait, keyword_xpath)
-                    if keyword:
-                        keyword = keyword.text.replace("\n", ", ")
-                        keyword_fmt = f"This stock can be held in a {keyword}"
+            url = f"{driver.current_url}/company-information"
+            get_with_backoff(driver, url)
+            isin = find_element_or_none(wait, isin_xpath)
+            if isin:
+                res = findall(r"[A-Z]{2}[A-Z0-9]{9}[0-9]", isin.text)
+                if len(res) > 0:
+                    isin = res[0]
+            keyword = find_element_or_none(wait, keyword_xpath)
+            if keyword:
+                # keyword = keyword.text.replace("\n", ", ")
+                keyword = keyword.text.split("\n")
+                keyword_fmt = f"This stock can be held in a {", ".join(keyword[:len(keyword)-1])} or {keyword[-1]}"
             f = dict(name=name,
                      isin=isin,
                      url=url or url_backup,

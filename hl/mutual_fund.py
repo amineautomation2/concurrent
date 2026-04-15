@@ -95,21 +95,22 @@ def get_fund_keyword_mf(driver: WebDriver, funds: list[dict]) -> list[dict]:
             name = fund["name"]
             isin, url, keyword = None, None, None
             get_with_backoff(driver, fund['url'])
-            url_elm = find_element_or_none(wait, url_xpath)
-            if url_elm:
-                url = url_elm.get_attribute("href")
-                if url:
-                    get_with_backoff(driver, url)
-                    isin = find_element_or_none(wait, isin_xpath)
-                    # print(url)
-                    if isin:
-                        isin = isin.text
-                    keyword = find_element_or_none(wait, keyword_xpath)
-                    if keyword:
-                        keyword = keyword.text
+            accept_cookies = find_element_or_none(
+                WebDriverWait(driver, timeout=3), '//*[@id="onetrust-reject-all-handler"]')
+            if accept_cookies:
+                accept_cookies.click()
+            url = driver.current_url
+            # get_with_backoff(driver, url)
+            isin = find_element_or_none(wait, isin_xpath)
+            # print(url)
+            if isin:
+                isin = isin.text
+            keyword = find_element_or_none(wait, keyword_xpath)
+            if keyword:
+                keyword = keyword.text
             f = dict(name=name,
                      isin=isin,
-                     url=url or url_backup,
+                     url=url,
                      keyword=keyword,
                      index=fund.get("index"),
                      sheet="MF",)
