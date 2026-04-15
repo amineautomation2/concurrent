@@ -4,14 +4,31 @@ on:
   schedule:
     - cron: '0 0 * * *' # Runs daily at midnight UTC
 
+env:
+  IDLE_TIME: 300
+
 jobs:
   run-investment-workflow:
     uses: ./.github/workflows/Investment.yml
   
-  run-etf-workflow:
+  wait-after-investment:
     needs: run-investment-workflow
     if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep ${{ env.IDLE_TIME }}
+
+  run-etf-workflow:
+    needs: wait-after-investment
+    if: always()
     uses: ./.github/workflows/ETF.yml
+
+  wait-after-etf:
+    needs: run-etf-workflow
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep ${{ env.IDLE_TIME }}
 
   run-mf-workflow:
     needs: run-etf-workflow

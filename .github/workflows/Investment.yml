@@ -30,10 +30,10 @@ jobs:
       - name: Run Scraper Chunk
         run: python main.py --id ${{ matrix.chunk }} --sheet Investment
 
-      - name: Upload Partial Data
+      - name: Upload Investment Partial Data
         uses: actions/upload-artifact@v6
         with:
-          name: results-${{ matrix.chunk }}
+          name: results-it-csv-${{ matrix.chunk }}
           path: csv/hl_${{ matrix.chunk }}_investment.csv
           if-no-files-found: error
 
@@ -58,11 +58,11 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Download All Artifacts
+      - name: Download Investment Artifacts
         uses: actions/download-artifact@v6
         with:
           path: csv
-          pattern: results-*
+          pattern: results-it-csv-*
           merge-multiple: true
 
       - name: Merge and Commit
@@ -71,7 +71,7 @@ jobs:
       - name: Upload Partial Data
         uses: actions/upload-artifact@v6
         with:
-          name: hl
+          name: hl-investment
           path: spreadsheet
           if-no-files-found: error
 

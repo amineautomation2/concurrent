@@ -30,10 +30,10 @@ jobs:
       - name: Run Scraper Chunk
         run: python main.py --id ${{ matrix.chunk }} --sheet ETF
 
-      - name: Upload Partial Data
+      - name: Upload ETF Partial Data
         uses: actions/upload-artifact@v6
         with:
-          name: results-${{ matrix.chunk }}
+          name: results-etf-csv-${{ matrix.chunk }}
           path: csv/hl_${{ matrix.chunk }}_etf.csv
           if-no-files-found: error
 
@@ -62,7 +62,7 @@ jobs:
         uses: actions/download-artifact@v6
         with:
           path: csv
-          pattern: results-*
+          pattern: results-etf-csv-*
           merge-multiple: true
 
       - name: Merge and Commit
@@ -71,7 +71,7 @@ jobs:
       - name: Upload Partial Data
         uses: actions/upload-artifact@v6
         with:
-          name: hl
+          name: hl-etf
           path: spreadsheet
           if-no-files-found: error
 
