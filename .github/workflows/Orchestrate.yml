@@ -1,4 +1,4 @@
-name: Orchestrate
+name: Orchestrator
 on:
   workflow_dispatch:
   schedule:
