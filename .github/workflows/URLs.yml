@@ -1,0 +1,110 @@
+name: Gather URLs IT, ETF, MF
+on:
+  workflow_call:
+  workflow_dispatch:
+
+env:
+  IDLE_TIME: 120
+
+jobs:
+  url-investment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12.3'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Scraper Chunk
+        run: python main.py --url Investment
+
+      - name: Upload Base Spreadsheet
+        uses: actions/upload-artifact@v6
+        with:
+          name: base-investment
+          path: spreadsheet/hl.xlsx
+          if-no-files-found: error
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "update: investment url"
+
+  wait-after-investment:
+    needs: url-investment
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep ${{ env.IDLE_TIME }}
+
+  url-etf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '2.12.3'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Scraper Chunk
+        run: python main.py --url ETF
+
+      - name: Upload Base Spreadsheet
+        uses: actions/upload-artifact@v5
+        with:
+          name: base-etf
+          path: spreadsheet/hl.xlsx
+          if-no-files-found: error
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: "update: etf url"
+
+  wait-after-etf:
+    needs: url-etf
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep ${{ env.IDLE_TIME }}
+
+  url-mf:
+    needs: wait-after-etf
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12.3'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Scraper Chunk
+        run: python main.py --url MF
+
+      - name: Upload Base Spreadsheet
+        uses: actions/upload-artifact@v6
+        with:
+          name: base-mf
+          path: spreadsheet/hl.xlsx
+          if-no-files-found: error
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "update: mf url"

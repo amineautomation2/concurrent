@@ -5,10 +5,21 @@ on:
     - cron: '0 0 * * *' # Runs daily at midnight UTC
 
 env:
-  IDLE_TIME: 300
+  IDLE_TIME: 120
 
 jobs:
+  run-urls-workflow:
+    uses: ./.github/workflows/URLs.yml
+
+  wait-after-urls:
+    needs: run-urls-workflow
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep ${{ env.IDLE_TIME }}
+
   run-investment-workflow:
+    needs: wait-after-urls
     uses: ./.github/workflows/Investment.yml
   
   wait-after-investment:
