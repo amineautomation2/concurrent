@@ -9,13 +9,21 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v6
 
-            - name: Setup Python
-              uses: actions/setup-python@v6
+            - name: Send mail with attachment
+              uses: dawidd6/action-send-mail@v16
               with:
-                python-version: '3.12.3'
+                server_address: smtp.gmail.com
+                server_port: 465
+                secure: true
+                username: ${{ secrets.EMAIL_USERNAME }}
+                password: ${{ secrets.EMAIL_PASSWORD }}
+                #subject: ${{ steps.python_entrypoint.outputs.email_title }}
+                subject: "HL Report"
+                to: ${{ secrets.EMAIL_DEV }}
+                from: ${{ secrets.EMAIL_FROM }}
+                #body: ${{ steps.status_body.outputs.email_body }}
+                #attachments: spreadsheet/chelsea_financial.xlsx,spreadsheet/halifax.xlsx,spreadsheet/iweb.xlsx,spreadsheet/quilter.xlsx,spreadsheet/standard_life.xlsx,spreadsheet/willis_owen.xlsx,spreadsheet/financial_discount.xlsx
+                #body: ${{ steps.email_prep.outputs.email_body }}
+                body: "hl.xlsx report"
 
-            - name: Pull latest changes
-              run: |
-                git config --global user.name "github-actions[bot]"
-                git config --global user.email "github-actions[bot]@users.noreply.github.com"
-                git pull --rebase origin main
+                attachments: spreadsheet/hl.xslx
