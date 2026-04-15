@@ -26,4 +26,4 @@ jobs:
                 #body: ${{ steps.email_prep.outputs.email_body }}
                 body: "hl.xlsx report"
 
-                attachments: spreadsheet/hl.xslx
+                attachments: spreadsheet/hl.xlsx
