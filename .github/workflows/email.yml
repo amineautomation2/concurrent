@@ -1,6 +1,7 @@
 name: send email report
 on:
     workflow_dispatch:
+
 jobs:
     email:
         runs-on: ubuntu-latest

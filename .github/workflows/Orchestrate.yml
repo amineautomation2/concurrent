@@ -8,11 +8,11 @@ env:
   IDLE_TIME: 120
 
 jobs:
-  run-urls-workflow:
-    uses: ./.github/workflows/URLs.yml
+  #run-urls-workflow:
+  #  uses: ./.github/workflows/URLs.yml
 
   wait-after-urls:
-    needs: run-urls-workflow
+    #needs: run-urls-workflow
     if: always()
     runs-on: ubuntu-latest
     steps:
