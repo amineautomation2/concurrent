@@ -43,5 +43,8 @@ jobs:
 
   run-mf-workflow:
     needs: wait-after-etf
-    if: always()
     uses: ./.github/workflows/MF.yml
+  
+  run-email-workflow:
+    needs: run-mf-workflow
+    uses: ./.github/workflows/email.yml

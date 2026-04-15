@@ -1,5 +1,6 @@
-name: send email report
+name: Email sender
 on:
+    workflow_call:
     workflow_dispatch:
 
 jobs:
@@ -18,7 +19,7 @@ jobs:
                 username: ${{ secrets.EMAIL_USERNAME }}
                 password: ${{ secrets.EMAIL_PASSWORD }}
                 #subject: ${{ steps.python_entrypoint.outputs.email_title }}
-                subject: "HL Report"
+                subject: "Hargreaves Lansdown Report"
                 to: ${{ secrets.EMAIL_DEV }}
                 from: ${{ secrets.EMAIL_FROM }}
                 #body: ${{ steps.status_body.outputs.email_body }}
