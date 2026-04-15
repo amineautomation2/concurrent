@@ -1,6 +1,7 @@
 name: ETF
 
 on:
+  workflow_call:
   workflow_dispatch:
 
 jobs:
@@ -65,7 +66,7 @@ jobs:
           merge-multiple: true
 
       - name: Merge and Commit
-        run: python main.py --sheet etf
+        run: python main.py --sheet ETF
 
       - name: Upload Partial Data
         uses: actions/upload-artifact@v6

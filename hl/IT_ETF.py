@@ -159,7 +159,9 @@ def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
     # isin_xpath = '//div[@id="radix-:R3km:-content-Overview" and @data-state="active"]/section/div[1]/div[2]/ul/li[last()]/div/div[2]'
     # isin_xpath = '//ul/li/div/div[matches(., "[A-Z]{2}[A-Z0-9]{9}[0-9]")]'
     isin_xpath = '//ul[@class="info-list_root__Vpw6y info-list_narrow__gzzia"]'
-    keyword_xpath = '//div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/div/li'
+    keyword_xpath = '//*[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/div/li'
+    keyword_xpath = '//*[@id="__next"]/div/div/header/div[3]/div[2]/ul/div/div/div'
+    keyword_xpath = '//div[@class="applicable-products_applicable_products__JsXiH"]'
     # keyword_xpath = '//div[@class="small-hide medium-hide wide-medium-hide"]'
     wait = WebDriverWait(driver, timeout=10)
     data = []
