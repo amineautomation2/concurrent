@@ -42,6 +42,6 @@ jobs:
       - run: sleep ${{ env.IDLE_TIME }}
 
   run-mf-workflow:
-    needs: run-etf-workflow
+    needs: wait-after-etf
     if: always()
     uses: ./.github/workflows/MF.yml
