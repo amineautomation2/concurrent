@@ -56,7 +56,7 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
                 "id_worker": id_worker,
                 "max_workers": max_workers,
                 "driver": driver,
-                "funds": funds_it[:1],
+                "funds": funds_it[:5],
                 "sheet": sheet,
             }
             process_worker_batch(it_config)
@@ -78,7 +78,7 @@ def hl_runner(id_worker: int, max_workers: int, sheet: str):
                 "id_worker": id_worker,
                 "max_workers": max_workers,
                 "driver": driver,
-                "funds": funds_mf,
+                "funds": funds_mf[:5],
                 "sheet": sheet,
             }
             process_worker_batch(mf_config)

@@ -91,13 +91,7 @@ KEYWORD_XPATH = //div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/d
 def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
     url_xpath = '//nav[@aria-label="Factsheet tabs"]/ul/li[6]/div/a'
     url2_xpath = '//div[@id="factsheet-nav-container"]/ul/li[8]/a'
-    # isin_xpath = '//div[@id="radix-:r3:-content-Overview"]'
-    # isin_xpath = '//div[@id="radix-:r3:-content-Overview"][1]/section/div[1]/div[2]/ul/li[6]/div/div[2]'
-    # isin_xpath = '//*[@id="radix-:r3:-content-Overview"]/section/div/div[2]/ul/li[6]/div/div[2]'
-    isin_xpath = 'div[@id="__next"]/main/div/div/div/div[2]/div[1]/section/div/div[2]/ul/li[6]/div/div[2]'
     isin_xpath = '//ul[@class="info-list_root__Vpw6y info-list_narrow__gzzia"]'
-    # isin_xpath = '//div[@id="radix-:r3:-content-Overview" and @data-state="active"]/section/div[1]/div[2]/ul/li[6]/div/div[2]'
-    # isin_xpath = '//ul/li/div/div[matches(., "[A-Z]{2}[A-Z0-9]{9}[0-9]")]'
     keyword_xpath = '//div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/div/li'
     wait = WebDriverWait(driver, timeout=10)
     data = []
@@ -163,7 +157,8 @@ def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
     url_xpath = '//nav[@aria-label="Factsheet tabs"]/ul/li[3]/div/a'
     url2_xpath = '//div[@id="factsheet-nav-container"]/ul/li[5]/a'
     # isin_xpath = '//div[@id="radix-:R3km:-content-Overview" and @data-state="active"]/section/div[1]/div[2]/ul/li[last()]/div/div[2]'
-    isin_xpath = '//ul/li/div/div[matches(., "[A-Z]{2}[A-Z0-9]{9}[0-9]")]'
+    # isin_xpath = '//ul/li/div/div[matches(., "[A-Z]{2}[A-Z0-9]{9}[0-9]")]'
+    isin_xpath = '//ul[@class="info-list_root__Vpw6y info-list_narrow__gzzia"]'
     keyword_xpath = '//div[@id="__next"]/div/div[2]/header/div[3]/div[2]/ul/div/div/div/li'
     # keyword_xpath = '//div[@class="small-hide medium-hide wide-medium-hide"]'
     wait = WebDriverWait(driver, timeout=10)
@@ -187,9 +182,11 @@ def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
                 if url:
                     get_with_backoff(driver, url)
                     isin = find_element_or_none(wait, isin_xpath)
-                    # print(url)
                     if isin:
-                        isin = isin.text
+                        # print(isin.get_attribute("textContent"))
+                        res = findall(r"[A-Z]{2}[A-Z0-9]{9}[0-9]", isin.text)
+                        if len(res) > 0:
+                            isin = res[0]
                     keyword = find_elements(wait, keyword_xpath)
                     if keyword:
                         keyword_fmt = []
