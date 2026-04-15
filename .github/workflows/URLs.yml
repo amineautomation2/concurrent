@@ -44,15 +44,16 @@ jobs:
       - run: sleep ${{ env.IDLE_TIME }}
 
   url-etf:
+    needs: wait-after-investment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: '2.12.3'
+          python-version: '3.12.3'
 
       - name: Install Dependencies
         run: pip install -r requirements.txt
@@ -61,7 +62,7 @@ jobs:
         run: python main.py --url ETF
 
       - name: Upload Base Spreadsheet
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: base-etf
           path: spreadsheet/hl.xlsx
