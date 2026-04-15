@@ -190,14 +190,13 @@ def get_with_backoff(driver: WebDriver, url: str, max_retries=5, initial_delay=2
 
 def save_xlsx(
 
-    xlsx_in: str,
     xlsx_out: str,
     funds: list[dict],
     cols: list[str],
     sheet: str,
     start: int = 2,
 ):
-    wb = openpyxl.load_workbook(xlsx_in)
+    wb = openpyxl.load_workbook(xlsx_out)
     ws = wb[sheet]
     for fund in funds:
         for idx, val in enumerate(cols):
