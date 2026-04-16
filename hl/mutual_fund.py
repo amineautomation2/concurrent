@@ -99,7 +99,9 @@ def get_fund_keyword_mf(driver: WebDriver, funds: list[dict]) -> list[dict]:
                 WebDriverWait(driver, timeout=3), '//*[@id="onetrust-reject-all-handler"]')
             if accept_cookies:
                 accept_cookies.click()
-            url = driver.current_url
+            url = f"{driver.current_url}/key-features"
+            get_with_backoff(driver, url)
+
             # get_with_backoff(driver, url)
             isin = find_element_or_none(wait, isin_xpath)
             # print(url)
