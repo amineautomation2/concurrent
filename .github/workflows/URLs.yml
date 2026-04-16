@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  IDLE_TIME: 120
+  IDLE_TIME: 60
 
 jobs:
   url-investment:

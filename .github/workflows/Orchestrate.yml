@@ -5,7 +5,7 @@ on:
   #  - cron: '0 0 * * *' # Runs daily at midnight UTC
 
 env:
-  IDLE_TIME: 120
+  IDLE_TIME: 60
 
 jobs:
   run-urls-workflow:
