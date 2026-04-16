@@ -3,6 +3,7 @@ import sys
 import argparse
 import time
 from hl import hl_runner, get_url
+from utils import get_xlsx_filepath
 from worker import (
     merge_csv_to_xlsx,
 )
@@ -15,13 +16,13 @@ def main():
     parser.add_argument("--url", type=str, help="sheet name")
 
     args = parser.parse_args()
-    out = "hl.xlsx"
-    xlsx_out = os.path.join(os.getcwd(), "spreadsheet", out)
+    # out = "hl.xlsx"
+    # xlsx_out = os.path.join(os.getcwd(), "spreadsheet", out)
+    xlsx_out = get_xlsx_filepath("hl.xlsx")
     if args.url:
         get_url(args.url)
 
     if args.id and args.sheet:
-        # id_worker = int(sys.argv[1])
         start = time.perf_counter()
         hl_runner(id_worker=int(args.id), max_workers=5, sheet=args.sheet)
         elapsed = time.perf_counter() - start

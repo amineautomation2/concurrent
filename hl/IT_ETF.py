@@ -59,7 +59,7 @@ def get_funds_url(driver: WebDriver, fund_type: Literal["Investment", "ETF"], xl
                 list_funds.append(dict(name=name, url=url))
         page += 1
         offset += 50
-        delay(1, 2)
+        delay(2, 3)
         if offset <= max_offset:
             endpoint = get_endpoint_by_type(fund_type, offset)
             get_with_backoff(driver, endpoint)
@@ -132,7 +132,7 @@ def get_fund_keyword_it(driver: WebDriver, funds: list[dict]) -> list[dict]:
         except:
             print(f"error: {fund}")
         # pprint(f)
-        delay(1, 2)
+        delay(1, 3)
     return data
 
 
@@ -183,5 +183,5 @@ def get_fund_keyword_etf(driver: WebDriver, funds: list[dict]) -> list[dict]:
         except:
             print(f"error: {fund}",)
         # pprint(f)
-        delay(1, 2)
+        delay(1, 3)
     return data

@@ -3,6 +3,7 @@ from pprint import pprint
 import requests
 import openpyxl
 import json
+from curl_cffi import get
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from math import ceil
@@ -19,7 +20,7 @@ cookies = {
 }
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0',
+    # 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0',
     'Accept': 'application/json, text/plain, */*',
     'Accept-Language': 'en-US,en;q=0.9',
     # 'Accept-Encoding': 'gzip, deflate, br, zstd',
@@ -36,7 +37,7 @@ headers = {
 
 def get_funds_json(headers: dict, cookies: dict, start: int = 0, rpp: int = 20) -> dict:
     endpoint = f'https://www.hl.co.uk/ajax/funds/fund-search/search?investment=&companyid=&sectorid=&wealth=&unitTypePref=&tracker=&payment_frequency=&payment_type=&yield=&standard_ocf=&perf12m=&perf36m=&perf60m=&fund_size=&num_holdings=&start={start}&rpp={rpp}&lo=0&sort=fd.full_description&sort_dir=asc&'
-    res = requests.get(endpoint, cookies=cookies, headers=headers)
+    res = get(endpoint, cookies=cookies, headers=headers, impersonate='chrome')
     return res.json()
 
 
@@ -49,6 +50,9 @@ def get_funds_url_mf(xlsx_path: str) -> list[dict]:
 
     for i in range(total):
         # print(f"current page [{i+1}/{total}]")
+        headers.update({
+            'Referer': f'https://www.hl.co.uk/funds/fund-discounts,-prices--and--factsheets/search-results?start={start}&rpp=20&lo=0&sort=fd.full_description&sort_dir=asc',
+        })
         data = get_funds_json(
             headers=headers, cookies=cookies, start=start, rpp=rpp)
         for fund in data["Results"]:
@@ -57,6 +61,7 @@ def get_funds_url_mf(xlsx_path: str) -> list[dict]:
             url = f"https://www.hl.co.uk/funds/fund-discounts,-prices--and--factsheets/search-results/{sedol}"
             funds.append(dict(name=name, url=url))
         start += rpp
+        delay(2, 3)
     iter = 2
     wb = openpyxl.load_workbook(xlsx_path)
     ws = wb["MF"]
@@ -91,6 +96,7 @@ def get_fund_keyword_mf(driver: WebDriver, funds: list[dict]) -> list[dict]:
     data = []
     for fund in funds:
         url_backup = fund.get("url")
+        print("current fund = ", fund)
         try:
             name = fund["name"]
             isin, url, keyword = None, None, None
@@ -112,7 +118,7 @@ def get_fund_keyword_mf(driver: WebDriver, funds: list[dict]) -> list[dict]:
                 keyword = keyword.text
             f = dict(name=name,
                      isin=isin,
-                     url=url,
+                     url=url or url_backup,
                      keyword=keyword,
                      index=fund.get("index"),
                      sheet="MF",)
@@ -121,5 +127,5 @@ def get_fund_keyword_mf(driver: WebDriver, funds: list[dict]) -> list[dict]:
         except:
             print(f"error: {fund}",)
         # pprint(f)
-        delay(1, 2)
+        delay(1, 3)
     return data
