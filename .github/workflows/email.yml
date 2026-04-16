@@ -20,8 +20,9 @@ jobs:
                 password: ${{ secrets.EMAIL_PASSWORD }}
                 #subject: ${{ steps.python_entrypoint.outputs.email_title }}
                 subject: "Hargreaves Lansdown Report"
+                from: "Amine Upwork <lysergically8@gmail.com>"
                 to: ${{ secrets.EMAIL_DEV }}
-                from: ${{ secrets.EMAIL_USERNAME }}
+                #from: ${{ secrets.EMAIL_FROM }}
                 #body: ${{ steps.status_body.outputs.email_body }}
                 #attachments: spreadsheet/chelsea_financial.xlsx,spreadsheet/halifax.xlsx,spreadsheet/iweb.xlsx,spreadsheet/quilter.xlsx,spreadsheet/standard_life.xlsx,spreadsheet/willis_owen.xlsx,spreadsheet/financial_discount.xlsx
                 #body: ${{ steps.email_prep.outputs.email_body }}
