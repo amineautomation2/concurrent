@@ -2,10 +2,8 @@ from math import ceil
 import os
 from pprint import pprint
 import openpyxl
-from selenium import webdriver
 from .mutual_fund import get_fund_keyword_mf, get_funds_url_mf
 from .IT_ETF import get_fund_keyword_etf, get_fund_keyword_it, get_funds_url
-from selenium.webdriver.chrome.webdriver import WebDriver
 from utils import delay, setup_driver, get_xlsx_filepath, save_xlsx, get_with_backoff
 
 from worker import (
@@ -29,6 +27,7 @@ def get_url(sheet: str) -> None:
         case "MF":
             get_funds_url_mf(xlsx)
             return
+    driver.quit()
 
 
 def hl_runner(id_worker: int, max_workers: int, sheet: str):
