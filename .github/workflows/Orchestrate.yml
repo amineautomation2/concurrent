@@ -3,23 +3,25 @@ on:
   workflow_dispatch:
   #schedule:
   #  - cron: '0 0 * * *' # Runs daily at midnight UTC
+  schedule:
+    - cron: "38 2 1 */3 *"
 
 env:
   IDLE_TIME: 60
 
 jobs:
-#  run-urls-workflow:
-#    uses: ./.github/workflows/URLs.yml
-#
-#  wait-after-urls:
-#    needs: run-urls-workflow
-#    if: always()
-#    runs-on: ubuntu-latest
-#    steps:
-#      - run: sleep ${{ env.IDLE_TIME }}
-#
+  run-urls-workflow:
+    uses: ./.github/workflows/URLs.yml
+
+  wait-after-urls:
+    needs: run-urls-workflow
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep ${{ env.IDLE_TIME }}
+
   run-investment-workflow:
-    #needs: wait-after-urls
+    needs: wait-after-urls
     uses: ./.github/workflows/Investment.yml
   
   wait-after-investment:
@@ -45,6 +47,6 @@ jobs:
     needs: wait-after-etf
     uses: ./.github/workflows/MF.yml
   
-  #run-email-workflow:
-  #  needs: run-mf-workflow
-  #  uses: ./.github/workflows/email.yml
+  run-email-workflow:
+    needs: run-mf-workflow
+    uses: ./.github/workflows/Email.yml
