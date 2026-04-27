@@ -1,0 +1,27 @@
+name: Send Email Report
+on:
+  workflow_call:
+  workflow_dispatch:
+
+env:
+  EMAIL_USERNAME: ${{secrets.EMAIL_USERNAME}}
+  EMAIL_PASSWORD: ${{secrets.EMAIL_PASSWORD}}
+  EMAIL_DEV: ${{ secrets.EMAIL_DEV }}
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12.3'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Send email
+        run: python sender.py
