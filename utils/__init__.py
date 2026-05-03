@@ -20,6 +20,36 @@ import openpyxl
 import json
 import ua_generator
 
+from openpyxl.styles import Font, PatternFill
+from openpyxl.utils import get_column_letter
+
+
+def create_spreadsheet(filename, sheet_names, column_names, col_width=25):
+    wb = openpyxl.Workbook()
+
+    # Remove default sheet
+    if "Sheet" in wb.sheetnames:
+        wb.remove(wb["Sheet"])
+
+    header_font = Font(name='Arial', size=12, bold=True, color="000000")
+    header_fill = PatternFill(
+        start_color="FFD700", end_color="FFD700", fill_type="solid")  # Gold background
+
+    for name in sheet_names:
+        ws = wb.create_sheet(title=name)
+        ws.append(column_names)
+
+        # Apply style and set column width
+        for i, cell in enumerate(ws[1], 1):
+            cell.font = header_font
+            cell.fill = header_fill
+
+            # Use the column letter (A, B, C...) to set width
+            column_letter = get_column_letter(i)
+            ws.column_dimensions[column_letter].width = col_width
+
+    wb.save(filename)
+
 
 def get_random_user_agent() -> dict:
     options = OptionsUA()
