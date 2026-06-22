@@ -1,17 +1,22 @@
-from math import ceil
 import os
+from math import ceil
 from pprint import pprint
-import openpyxl
-from .mutual_fund import get_fund_keyword_mf, get_funds_url_mf
-from .IT_ETF import get_fund_keyword_etf, get_fund_keyword_it, get_funds_url
-from utils import delay, setup_driver, get_xlsx_filepath, save_xlsx, get_with_backoff
 
+import openpyxl
+
+from utils import delay, get_with_backoff, get_xlsx_filepath, save_xlsx, setup_driver
 from worker import (
-    get_xlsx_data,
     get_data_by_worker_id,
+    get_xlsx_data,
     process_data,
     write_csv_by_id,
 )
+
+from .IT_ETF import (
+    get_fund_keyword,
+    get_funds_url,
+)
+from .mutual_fund import get_fund_keyword_mf, get_funds_url_mf
 
 
 def get_url(sheet: str) -> None:
@@ -94,14 +99,13 @@ def process_worker_batch(config: dict):
     funds_per_worker = get_data_by_worker_id(id_worker, max_workers, funds)
     out_csv = f"hl_{id_worker}_{sheet.lower()}.csv"
     fields = ["index", "name", "isin", "url", "keyword", "sheet"]
-    if sheet == "Investment":
-        funds_with_keywords = get_fund_keyword_it(driver, funds_per_worker)
+    if sheet == "Investment" or sheet == "ETF":
+        funds_with_keywords = get_fund_keyword(driver, funds_per_worker, sheet)
         write_csv_by_id(out_csv, funds_with_keywords, fields)
 
-    elif sheet == "ETF":
-        funds_with_keywords = get_fund_keyword_etf(driver, funds_per_worker)
-        write_csv_by_id(out_csv, funds_with_keywords, fields)
-    elif sheet == "MF":
-        funds_with_keywords = get_fund_keyword_mf(driver, funds_per_worker)
-        write_csv_by_id(out_csv, funds_with_keywords, fields)
+    # elif sheet == "ETF":
+    #    funds_with_keywords = get_fund_keyword_etf(driver, funds_per_worker)
+    #    write_csv_by_id(out_csv, funds_with_keywords, fields)
+    funds_with_keywords = get_fund_keyword_mf(driver, funds_per_worker)
+    write_csv_by_id(out_csv, funds_with_keywords, fields)
     # print(funds_with_keywords)
