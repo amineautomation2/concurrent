@@ -183,7 +183,7 @@ def get_fund_keyword(
                 keyword = find_element_or_none(wait, keyword_xpath)
                 if keyword:
                     # keyword = keyword.text.replace("\n", ", ")
-                    print("Keyword = ", keyword.text)
+                    # print("Keyword = ", keyword.text)
                     keyword = keyword.text.split("\n")
                     keyword_fmt = f"This stock can be held in a {', '.join(keyword[: len(keyword) - 1])} or {keyword[-1]}"
 

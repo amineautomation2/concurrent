@@ -96,9 +96,7 @@ def process_worker_batch(config: dict):
         funds_with_keywords = get_fund_keyword(driver, funds_per_worker, sheet)
         write_csv_by_id(out_csv, funds_with_keywords, fields)
 
-    # elif sheet == "ETF":
-    #    funds_with_keywords = get_fund_keyword_etf(driver, funds_per_worker)
-    #    write_csv_by_id(out_csv, funds_with_keywords, fields)
-    funds_with_keywords = get_fund_keyword_mf(driver, funds_per_worker)
-    write_csv_by_id(out_csv, funds_with_keywords, fields)
+    else:
+        funds_with_keywords = get_fund_keyword_mf(driver, funds_per_worker)
+        write_csv_by_id(out_csv, funds_with_keywords, fields)
     # print(funds_with_keywords)
