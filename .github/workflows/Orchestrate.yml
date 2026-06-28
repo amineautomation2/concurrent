@@ -10,7 +10,18 @@ env:
   IDLE_TIME: 60
 
 jobs:
+  run-spreadsheet-workflow:
+    uses: ./.github/workflows/spreadsheet.yml
+
+  wait-after-spreadsheet:
+    needs: run-spreadsheet-workflow
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep 10
+
   run-urls-workflow:
+    needs: wait-after-spreadsheet
     uses: ./.github/workflows/URLs.yml
 
   wait-after-urls:
