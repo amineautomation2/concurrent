@@ -1,14 +1,7 @@
-import os
-from math import ceil
-from pprint import pprint
-
-import openpyxl
-
-from utils import delay, get_with_backoff, get_xlsx_filepath, save_xlsx, setup_driver
+from utils import get_xlsx_filepath, setup_driver
 from worker import (
     get_data_by_worker_id,
     get_xlsx_data,
-    process_data,
     write_csv_by_id,
 )
 

@@ -204,7 +204,7 @@ def get_fund_keyword(
                 f = dict(
                     name=name,
                     isin=isin,
-                    url=url or url_backup,
+                    url=url,
                     keyword=keyword_fmt,
                     index=fund.get("index"),
                     sheet=fund_type,

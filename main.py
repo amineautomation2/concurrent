@@ -14,15 +14,18 @@ def main():
     parser.add_argument("--max", type=str, help="max worker")
     parser.add_argument("--sheet", type=str, help="sheet name")
     parser.add_argument("--url", type=str, help="sheet name")
+    parser.add_argument("--fresh", action="store_true", help="create fresh spreadsheet")
 
     args = parser.parse_args()
     # out = "hl.xlsx"
     # xlsx_out = os.path.join(os.getcwd(), "spreadsheet", out)
     xlsx_out = get_xlsx_filepath("hl.xlsx")
-    if args.url:
+    if args.fresh:
         create_spreadsheet(
             xlsx_out, ["Investment", "ETF", "MF"], ["Name", "ISIN", "URL", "Keyword"]
         )
+
+    if args.url:
         get_url(args.url)
 
     if args.id and args.max and args.sheet:

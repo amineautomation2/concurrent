@@ -1,0 +1,34 @@
+name: Fresh Spreadsheet
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  url-investment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12.3'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Scraper Chunk
+        run: python main.py --fresh
+
+      - name: Upload Fresh Spreadsheet
+        uses: actions/upload-artifact@v6
+        with:
+          name: base-investment
+          path: spreadsheet/hl.xlsx
+          if-no-files-found: error
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "update: refresh spreadsheet"
