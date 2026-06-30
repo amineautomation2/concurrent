@@ -1,8 +1,8 @@
 name: Orchestrator
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "38 2 1 */3 *"
+  #schedule:
+    #- cron: "38 2 1 */3 *"
     #- cron: "38 11 3 * *"
 
 

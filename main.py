@@ -15,6 +15,7 @@ def main():
     parser.add_argument("--sheet", type=str, help="sheet name")
     parser.add_argument("--url", type=str, help="sheet name")
     parser.add_argument("--fresh", action="store_true", help="create fresh spreadsheet")
+    parser.add_argument("--merge", action="store_true", help="merge csvs")
 
     args = parser.parse_args()
     # out = "hl.xlsx"
@@ -31,7 +32,7 @@ def main():
     if args.id and args.max and args.sheet:
         hl_runner(id_worker=int(args.id), max_workers=int(args.max), sheet=args.sheet)
 
-    elif args.sheet:
+    elif args.merge and args.sheet:
         merge_csv_to_xlsx(xlsx_out, ["name", "isin", "url", "keyword"], args.sheet)
 
 
